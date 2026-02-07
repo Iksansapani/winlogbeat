@@ -1,46 +1,36 @@
-# ======================== Winlogbeat Configuration ==========================
-
 output.logstash:
-  hosts: ["192.168.5.75:5044"]
+  hosts: ["192.168.5.10:5044"]
   worker: 1
 
 winlogbeat.shutdown_timeout: 30s
 
-# ======================== Winlogbeat Event Logs =============================
 winlogbeat.event_logs:
   - name: Application
     ignore_older: 24h
     tags: ["windows_event"]
-
   - name: Security
     ignore_older: 24h
     tags: ["windows_event"]
-
   - name: System
     ignore_older: 24h
     tags: ["windows_event"]
-
   - name: Microsoft-Windows-Sysmon/Operational
     ignore_older: 24h
     tags: ["windows_event"]
-
   - name: Microsoft-Windows-PowerShell/Operational
     ignore_older: 24h
     tags: ["windows_event"]
-
   - name: Windows PowerShell
     ignore_older: 24h
     tags: ["windows_event"]
 
-# ============================ Processors =====================================
 processors:
-  - add_host_metadata: 
+  - add_host_metadata:
       netinfo.enabled: true
   - drop_fields:
       fields: ["agent", "ecs", "log", "cloud", "host.os", "host.architecture"]
       ignore_missing: true
 
-# ============================== Logging ======================================
 logging.level: info
 logging.to_files: true
 logging.files:
